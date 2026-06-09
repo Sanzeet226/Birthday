@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday Monkeynee</title>
+    <style>
+      /* Base Global Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+
+      body {
+        background-color: #000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #ffffff;
+        overflow: hidden;
+      }
+
+      /* Phone Container Emulation (Matching Video Layout) */
+      .phone-wrapper {
+        width: 100%;
+        max-width: 420px;
+        height: 100vh;
+        max-height: 1000px;
+        position: relative;
+        background: #000000;
+        overflow: hidden;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Video Background Gradients & Accents */
+      .bg-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          #000000 0%,
+          #17130e 15%,
+          #0c0906 50%,
+          #17130e 85%,
+          #000000 100%
+        );
+        z-index: 1;
+      }
+
+      .vertical-line {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          rgba(184, 144, 71, 0) 0%,
+          rgba(184, 144, 71, 0.4) 30%,
+          rgba(184, 144, 71, 0.4) 70%,
+          rgba(184, 144, 71, 0) 100%
+        );
+        z-index: 2;
+      }
+
+      /* Sparkles / Yellow Particle Field */
+      .sparkle-field {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .sparkle {
+        position: absolute;
+        background: #ffeb7b;
+        border-radius: 50%;
+        box-shadow: 0 0 6px #ffeb7b;
+        animation: pulseFade 4s infinite ease-in-out;
+        opacity: 0;
+      }
+
+      @keyframes pulseFade {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0.6);
+        }
+        50% {
+          opacity: 0.8;
+          transform: scale(1.2);
+        }
+      }
+
+      /* General Screen View Container */
+      .screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 25px;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+        transform: scale(0.98);
+        z-index: 5;
+      }
+
+      .screen.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+      }
+
+      /* Neon Glow Font Configuration */
+      .glow-text {
+        color: #ffeb7b;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+        margin-bottom: 12px;
+        text-shadow: 0 0 10px rgba(255, 235, 123, 0.3);
+      }
+
+      .sub-desc {
+        color: #e0e0e0;
+        font-size: 13.5px;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+
+      /* Screen 1: The Ring Gate Button */
+      .gate-button {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #201a12 0%, #0c0906 100%);
+        border: 2.5px solid #bd9b5e;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 0 30px rgba(189, 155, 94, 0.25);
+        transition: transform 0.2s ease;
+      }
+
+      .gate-button:active {
+        transform: scale(0.96);
+      }
+
+      .gate-button::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        border: 1px solid rgba(189, 155, 94, 0.2);
+      }
+
+      .gate-heart {
+        font-size: 24px;
+        color: #bd9b5e;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .gate-label {
+        color: #bd9b5e;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-indent: 2.5px;
+      }
+
+      /* Screen 2: Progress Loader Strip */
+      .loading-illustration {
+        font-size: 75px;
+        margin-bottom: 25px;
+      }
+
+      .bar-container {
+        width: 75%;
+        height: 5px;
+        background: #25201a;
+        border-radius: 10px;
+        margin-top: 25px;
+        overflow: hidden;
+      }
+
+      .bar-fill {
+        width: 0%;
+        height: 100%;
+        background: #ffeb7b;
+        box-shadow: 0 0 8px #ffeb7b;
+        transition: width 3.2s linear;
+      }
+
+      /* Navigation Buttons */
+      .action-btn {
+        background: linear-gradient(to bottom, #fde492 0%, #bd9b5e 100%);
+        color: #0b0906;
+        border: none;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 25px;
+        box-shadow: 0 4px 15px rgba(189, 155, 94, 0.4);
+      }
+
+      /* Screen 4: Age Identity Layout */
+      .avatar-circle {
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background: #1e1912;
+        border: 2px solid #bd9b5e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 45px;
+        margin-bottom: 25px;
+      }
+
+      .age-container {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin: 25px 0;
+        width: 100%;
+      }
+
+      .age-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 65px;
+      }
+
+      .age-val {
+        font-size: 42px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1;
+      }
+
+      .age-lbl {
+        font-size: 12px;
+        color: #a5a5a5;
+        margin-top: 6px;
+        font-weight: 400;
+      }
+
+      /* Screen 5: Instagram Style Swipe Slider Component */
+      .slider-viewport {
+        width: 100%;
+        overflow: hidden;
+        margin: 20px 0;
+        padding: 10px 0;
+        position: relative;
+      }
+
+      .slider-container {
+        display: flex;
+        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        padding-left: 65px; /* Offset to center active slide and peek previous */
+      }
+
+      .slide-card {
+        min-width: 250px;
+        width: 300px;
+        height: 500px;
+        margin-right: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid #bd9b5e;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        flex-shrink: 0;
+        background: #111;
+      }
+
+      .slide-card img {
+        width: 100%;
+        height: 250%;
+        object-fit: cover;
+      }
+
+      .slide-card video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Screen 6: Card Envelope Trigger Layout */
+      .letter-envelope {
+        width: 85%;
+        background: #141414;
+        border: 1px solid rgba(189, 155, 94, 0.4);
+        border-radius: 16px;
+        padding: 35px 20px;
+        cursor: pointer;
+        margin-top: 15px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+        transition: transform 0.2s ease;
+      }
+
+      .letter-envelope:active {
+        transform: scale(0.98);
+      }
+
+      .envelope-glyph {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+
+      /* Dynamic Pop-up Modal Window Overlay */
+      .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 20;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        padding: 30px 20px;
+      }
+
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-box {
+        background: #141414;
+        border: 1px solid #bd9b5e;
+        width: 100%;
+        border-radius: 16px;
+        padding: 25px;
+        position: relative;
+        max-height: 85%;
+        overflow-y: auto;
+        text-align: left;
+        box-shadow: 0 0 30px rgba(189, 155, 94, 0.15);
+      }
+
+      .modal-dismiss {
+        position: absolute;
+        top: 15px;
+        right: 18px;
+        font-size: 20px;
+        color: #8c8c8c;
+        cursor: pointer;
+      }
+
+      .modal-headline {
+        color: #ffeb7b;
+        font-size: 22px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+
+      .modal-sub-heart {
+        color: #ff4757;
+        font-size: 13px;
+        text-align: center;
+        margin-bottom: 22px;
+      }
+
+      .modal-body-print {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #e6e6e6;
+        white-space: pre-wrap;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <audio
+      id="bgAudio"
+      src="photo/nastelbom-happy-birthday-495860.mp3"
+      preload="auto"
+      loop
+    ></audio>
+
+    <div class="phone-wrapper">
+      <div class="bg-gradient"></div>
+      <div class="vertical-line"></div>
+      <div class="sparkle-field" id="sparkleField"></div>
+
+      <div class="screen active" id="view1">
+        <div class="gate-button" onclick="triggerDeployment()">
+          <div class="gate-heart">🍃💛🍃</div>
+          <div class="gate-label">TAP TO OPEN</div>
+        </div>
+      </div>
+
+      <div class="screen" id="view2">
+        <div class="loading-illustration">💖👷🏻‍♀️💖</div>
+        <div class="glow-text">Loading something<br />special...</div>
+        <div class="bar-container">
+          <div class="bar-fill" id="loadingBarFill"></div>
+        </div>
+      </div>
+
+      <div class="screen" id="view3">
+        <div class="loading-illustration" style="margin-bottom: 15px">😍🐒😍</div>
+        <div class="glow-text" style="font-size: 25px">
+          There's something<br />special I want to tell<br />you...
+        </div>
+        <div class="sub-desc" style="margin-top: 5px">
+          that's why I made something<br />special for you...
+        </div>
+        <button class="action-btn" onclick="navigateToView(4)">Next✨</button>
+      </div>
+
+      <div class="screen" id="view4">
+        <div class="avatar-circle">💕👸🏻💕</div>
+        <div class="glow-text" style="font-size: 28px; margin-bottom: 5px">
+          Happy Birthday<br />Cutiepiee
+        </div>
+
+        <div class="age-container">
+          <div class="age-block">
+            <span class="age-val">2060</span>
+            <span class="age-lbl">Years</span>
+          </div>
+          <div class="age-block">
+            <span class="age-val">02</span>
+            <span class="age-lbl">Months</span>
+          </div>
+          <div class="age-block">
+            <span class="age-val">29</span>
+            <span class="age-lbl">Days</span>
+          </div>
+        </div>
+
+        <button class="action-btn" onclick="navigateToView(5)">
+          Continue 💛
+        </button>
+      </div>
+
+      <div class="screen" id="view5">
+        <div class="glow-text" style="font-size: 24px; margin-bottom: 2px">
+          Cute Memories
+        </div>
+        <div
+          class="sub-desc"
+          style="margin-bottom: 15px; font-size: 13px; opacity: 0.7"
+        >
+  
+        </div>
+
+        <div class="slider-viewport" id="sliderViewport">
+          <div class="slider-container" id="sliderTrack">
+            <div class="slide-card">
+              <video
+                src="photo/copy_32D47FA3-704B-43EB-8D60-7CBAF768647F.mp4"
+                autoplay
+                muted="false"
+                loop
+                playsinline
+                preload="auto"
+              ></video>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="action-btn"
+          style="margin-top: 15px"
+          onclick="navigateToView(6)"
+        >
+          Read My Message 💕💌💕
+        </button>
+      </div>
+
+      <div class="screen" id="view6">
+        <div class="glow-text" style="font-size: 23px; margin-bottom: 20px">
+          Tap to see the<br />message 💕☀️👉🏼👇🏼💕
+        </div>
+
+        <div class="letter-envelope" onclick="revealLetterModal()">
+          <div class="envelope-glyph">💌</div>
+          <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px">
+            For You, My Cutuuu
+          </h4>
+          <p style="color: #ff4757; font-size: 12px; font-weight: 500">
+            Tap to read 💕
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-overlay" id="letterModalOverlay">
+        <div class="modal-box">
+          <span class="modal-dismiss" onclick="hideLetterModal()">&times;</span>
+          <div class="modal-headline"><Happy Birthday></div>
+          <div class="modal-sub-heart">Just for you ❤️</div>
+          <div class="modal-body-print" id="textPrintEngine"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Generate Starry Star Field Effects
+      const container = document.getElementById("sparkleField");
+      const particleCount = 35;
+      for (let i = 0; i < particleCount; i++) {
+        const star = document.createElement("div");
+        star.classList.add("sparkle");
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        const dimensions = Math.random() * 4 + 2;
+        star.style.width = dimensions + "px";
+        star.style.height = dimensions + "px";
+        star.style.animationDelay = Math.random() * 4 + "s";
+        container.appendChild(star);
+      }
+
+      // Sequential View Navigation Router Engine
+      function navigateToView(targetIndex) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((view) => view.classList.remove("active"));
+        document.getElementById("view" + targetIndex).classList.add("active");
+      }
+
+      // Stage 1 Deployment Hook
+      function triggerDeployment() {
+        navigateToView(2);
+
+        // Start background audio (user gesture from TAP TO OPEN should allow playback)
+        const bgAudio = document.getElementById("bgAudio");
+        if (bgAudio) {
+          bgAudio.currentTime = 0;
+          bgAudio.play().catch(() => {
+            // Autoplay may still be blocked by the browser.
+            // Leave this for debugging; user can tap again if needed.
+            console.warn("Audio play blocked by browser autoplay policy.");
+          });
+        }
+
+        const progressionFill = document.getElementById("loadingBarFill");
+        progressionFill.style.width = "100%";
+
+        setTimeout(() => {
+          navigateToView(3);
+        }, 3300);
+      }
+
+      // Swipe Deck Setup
+      const track = document.getElementById("sliderTrack");
+      const viewPort = document.getElementById("sliderViewport");
+      let initialX = 0;
+      let activeIndex = 0;
+      const totalSlides = 1;
+
+      const slideSpan = 270; // width (250) + margin (20)
+
+      viewPort.addEventListener("touchstart", (e) => {
+        initialX = e.touches[0].clientX;
+      });
+      viewPort.addEventListener("touchend", (e) => {
+        const differenceX = initialX - e.changedTouches[0].clientX;
+        if (Math.abs(differenceX) > 40) {
+          if (differenceX > 0 && activeIndex < totalSlides - 1) activeIndex++;
+          else if (differenceX < 0 && activeIndex > 0) activeIndex--;
+          track.style.transform = `translateX(${-activeIndex * slideSpan}px)`;
+        }
+      });
+
+      // Click alternative fallback loop mechanism for desktop mice testing environments
+      let clickStart = 0;
+      viewPort.addEventListener("mousedown", (e) => {
+        clickStart = e.clientX;
+      });
+      viewPort.addEventListener("mouseup", (e) => {
+        const diff = clickStart - e.clientX;
+        if (Math.abs(diff) > 40) {
+          if (diff > 0 && activeIndex < totalSlides - 1) activeIndex++;
+          else if (diff < 0 && activeIndex > 0) activeIndex--;
+          track.style.transform = `translateX(${-activeIndex * slideSpan}px)`;
+        }
+      });
+
+      // Exact String Sequence Payload matching video text frame
+      const documentPayload = `Happy Birthday to you, Aarya. May this year brings happiness, love, care and healthy life to you. Aarya, I am very grateful to have you in my life as a friend you mean a lot to me thankyou for everything.May God fulfill all your dreams and wishes . And I want to see you as Engineer. You are so important to me . Dherai time vayo we haven’t meet . I requested to God we will meet soon as possible . when we were child we expensed a lot of time together and created beautiful memories . Every day I remember you and our memories . You are precious to me ,Aarya.
+At last,happy 23th 🎂✨❤️🥳`;
+      let position = 0;
+      let isWriting = false;
+
+      function revealLetterModal() {
+        document.getElementById("letterModalOverlay").classList.add("open");
+        if (!isWriting) {
+          isWriting = true;
+          executeTypewrite();
+        }
+      }
+
+      function hideLetterModal() {
+        document.getElementById("letterModalOverlay").classList.remove("open");
+      }
+
+      function executeTypewrite() {
+        if (position < documentPayload.length) {
+          document.getElementById("textPrintEngine").innerHTML +=
+            documentPayload.charAt(position);
+          position++;
+          setTimeout(executeTypewrite, 40);
+        }
+      }
+    </script>
+  </body>
+</html>
